@@ -6,10 +6,14 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import numpy as np
 
+#اینجا باید اینو باز کنیم ببینیم طرف چی انتخاب کرده بعد ببندیم بعدیو باز  کنیم
+Form = uic.loadUiType(os.path.join(os.getcwd(), "proj.main.ui"))[0]
+self.pushButton_biginner.connect()
+self.pushButton_medium.connect()
+self.pushButton_hard.connect()
+# اینا باید تو کلاس تعریف بشن ولی نمیدونم چجوری برا همین اینجا نوشتم
 
-
-
-Form = uic.loadUiType(os.path.join(os.getcwd(), "Form.ui"))[0]
+Form = uic.loadUiType(os.path.join(os.getcwd(), "proj.ui"))[0]
 
 class IntroWindow(QMainWindow, Form):
     def __init__(self):
@@ -19,6 +23,9 @@ class IntroWindow(QMainWindow, Form):
         self.hint.clicked.connect(self.sayhint)
         self.quit.clicked.connect(lambda: app.quit())
         self.text_time.setText(f"{time_ns()/1000000}ms")
+        #   به جای این که خیلی اشغاله میتونیم از ال سی دی استفاده کنیم به نظرت هرچی بهتره
+        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QLCDNumber.html 
+        
         for  i in range (81):
             self.text_xy.setText()
             #تو کدت اونجایی که خونه ها تعریف میشن چی باشن اینو ست تکست کن کن
