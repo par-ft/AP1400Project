@@ -1,5 +1,6 @@
 import random
 import copy
+from tracemalloc import start
 from solver import *
 from random import seed
 from random import randint
@@ -13,40 +14,23 @@ class Maker:
         self.puzzle = Wboard  # pass a puzzle white board
         # choose the index for changing
         self.index = 0
-        self.taken = []
+        self.timecounter = time()
+        self.untaken = list(range(1, 82))
         self.initialize()
         self.unsolvable = False
 
     def initialize(self):
-        for i in range(6):
+        a = time()
+        for i in range(1):
             print(f"try {i}")
             self.index = self.indexDecoding(RandomNumber(1, 81))
             self.GetUntakenIndex()
             self.GetANumber()
-            self.check_forsolve()
-            while self.unsolvable:
-                print("solve loop")
-                self.index = self.indexDecoding(RandomNumber(1, 81))
-                self.GetUntakenIndex()
-                self.GetANumber()
-                self.check_forsolve()
-
-    def chooseOne(self):
-        for i in range(64):
-            self.index = self.indexDecoding(RandomNumber(1, 81))
-            self.GetUntakenIndex()
-            self.GetANumber()
-            if self.checkIfUnique():
-                return solve(self.puzzle)
 
     def GetUntakenIndex(self):
-        while True:
-            print("In loop 1")
-            if self.index in self.taken:
-                self.index = self.indexDecoding(RandomNumber(1, 81))
-            else:
-                self.taken.append(self.index)
-                return
+        a = random.choice(self.untaken)
+        self.index = self.indexDecoding(a)
+        self.untaken.remove(a)
 
     def GetANumber(self):
         numb = RandomNumber(1, 9)
@@ -59,15 +43,12 @@ class Maker:
         self.puzzle[self.index[0]][self.index[1]] = numb
 
     def indexDecoding(self, numb):
-        a = -1
+        a = 0
         number = numb
         while number > 9:
             number = number - 9
             a += 1
         return [a, number - 1]
-
-    def checkIfUnique():
-        pass
 
     def check_row(self, val):
         row = self.index[0]
@@ -114,6 +95,7 @@ class Maker:
     def creater(self):
         temp = self.puzzle
         temp2 = copy.deepcopy(temp)
+
         return solve(temp2)
 
     def check_forsolve(self):
@@ -125,7 +107,9 @@ class Maker:
             temp_puzzle[7]+temp_puzzle[8]
         if 0 in tempList:
             self.unsolvable = True
+            print("unsolvable")
         else:
+            print("solvable")
             self.unsolvable = False
 
 
